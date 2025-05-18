@@ -8,19 +8,13 @@ import com.socialhub.socialhub_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
 import java.util.UUID;
-=======
->>>>>>> mine/main
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-<<<<<<< HEAD
 import java.util.Set;
-=======
->>>>>>> mine/main
 
 @Service
 public class PostService {
@@ -33,7 +27,6 @@ public class PostService {
 
     private static final String UPLOAD_DIR = "uploads/images/";
 
-<<<<<<< HEAD
     public List<PostDto> getAllPosts(UUID keycloakId) {
         User user = userRepository.findByKeycloakId(keycloakId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -61,15 +54,6 @@ public class PostService {
         postRepository.save(post);
     }
 
-=======
-    public List<PostDto> getAllPosts() {
-        return postRepository.findAll()
-                .stream()
-                .map(this::toPostDto)
-                .collect(Collectors.toList());
-    }
-
->>>>>>> mine/main
     public Optional<PostDto> getPostById(Long id) {
         return postRepository.findById(id)
                 .map(this::toPostDto);
@@ -120,7 +104,6 @@ public class PostService {
         postRepository.delete(post);
     }
 
-<<<<<<< HEAD
     // Brukt når vi vet hvem den innloggede brukeren er (f.eks. for liked status)
     private PostDto toPostDto(Post post, User currentUser) {
         PostDto dto = new PostDto(
@@ -146,16 +129,11 @@ public class PostService {
     // Fallback hvis vi ikke har tilgang på bruker (brukes av create/update/getById)
     private PostDto toPostDto(Post post) {
         PostDto dto = new PostDto(
-=======
-    private PostDto toPostDto(Post post) {
-        return new PostDto(
->>>>>>> mine/main
                 post.getId(),
                 post.getContent(),
                 post.getUser().getKeycloakId(),
                 post.getImagePath(),
                 post.getCreatedAt(),
-<<<<<<< HEAD
                 post.getUser().getUsername()
         );
 
@@ -163,9 +141,5 @@ public class PostService {
         dto.setLiked(false); // fallback: ukjent om brukeren har likt
 
         return dto;
-=======
-                post.getUser().getUsername() // use username for display and ownership check
-        );
->>>>>>> mine/main
     }
 }

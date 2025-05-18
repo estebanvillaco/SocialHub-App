@@ -24,19 +24,11 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-<<<<<<< HEAD
     public ResponseEntity<List<PostDto>> getAllPosts(@RequestParam UUID keycloakId) {
         return ResponseEntity.ok(postService.getAllPosts(keycloakId));
     }
 
 
-=======
-    public ResponseEntity<List<PostDto>> getAllPosts() {
-        List<PostDto> posts = postService.getAllPosts();
-        return ResponseEntity.ok(posts);
-    }
-
->>>>>>> mine/main
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto request) {
         try {
@@ -112,7 +104,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
@@ -132,7 +124,6 @@ public class PostController {
         }
     }
 
-<<<<<<< HEAD
     @PostMapping("/{id}/like")
     public ResponseEntity<Void> toggleLike(@PathVariable Long id, @RequestParam String keycloakId) {
         try {
@@ -148,8 +139,6 @@ public class PostController {
 
 
 
-=======
->>>>>>> mine/main
     // --- Helper Methods ---
 
     private void validateImage(MultipartFile image) {

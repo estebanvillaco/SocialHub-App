@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
 import api from '../api/api';
 import { useAuth } from '../context/AuthContext';
 import { useFeed } from '../context/FeedContext';
@@ -43,23 +42,3 @@ const LikeButton = ({ postId, initialLikes = 0, initiallyLiked = false }) => {
 };
 
 export default LikeButton;
-=======
-
-const LikeButton = ({ initialLikes }) => {
-  const [likes, setLikes] = useState(initialLikes);
-  const [hasLiked, setHasLiked] = useState(false);
-
-  const handleLike = () => {
-    setLikes(hasLiked ? likes - 1 : likes + 1);
-    setHasLiked(!hasLiked);
-  };
-
-  return (
-    <button className="like-button" onClick={handleLike}>
-      {hasLiked ? '❤️' : '❤'} ({likes})
-    </button>
-  );
-};
-
-export default LikeButton;
->>>>>>> mine/main

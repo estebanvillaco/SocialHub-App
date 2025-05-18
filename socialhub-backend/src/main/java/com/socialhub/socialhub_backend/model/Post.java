@@ -2,11 +2,8 @@ package com.socialhub.socialhub_backend.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-<<<<<<< HEAD
 import java.util.HashSet;
 import java.util.Set;
-=======
->>>>>>> mine/main
 
 @Entity
 public class Post {
@@ -26,7 +23,6 @@ public class Post {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-<<<<<<< HEAD
     @ManyToMany
     @JoinTable(
             name = "post_likes",
@@ -36,8 +32,6 @@ public class Post {
     private Set<User> likedBy = new HashSet<>();
 
 
-=======
->>>>>>> mine/main
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
@@ -83,12 +77,9 @@ public class Post {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-<<<<<<< HEAD
 
     public Set<User> getLikedBy() {return likedBy;}
 
     public void setLikedBy(Set<User> likedBy) {this.likedBy = likedBy;}
 
-=======
->>>>>>> mine/main
 }
