@@ -15,7 +15,6 @@ import Notifications from "./components/Notifications";
 // Import navigation components
 import Home from "./Navigation/components/Home";
 import Search from "./Navigation/components/SearchAndFollow";
-import Explore from "./Navigation/components/Explore";
 import Messages from "./Navigation/components/Messages";
 import Profile from "./Navigation/components/Profile";
 
@@ -32,7 +31,6 @@ const Navbar = ({ logout }) => {
         <NavLink to="/" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>Home</NavLink>
         <NavLink to="/search" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>Search</NavLink>
         <NavLink to="/notifications" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>Notifications</NavLink>
-        <NavLink to="/explore" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>Explore</NavLink>
         <NavLink to="/messages" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>Messages</NavLink>
         <NavLink to="/postcreator" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>Create Post</NavLink>
         <NavLink to="/profile" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>Profile</NavLink>
@@ -64,7 +62,6 @@ const MainContent = () => {
             <Route path="/" element={<><Home /><div className="card"><PersonalizedFeed /></div></>} />
             <Route path="/search" element={<Search />} />
             <Route path="/notifications" element={<Notifications />} />
-            <Route path="/explore" element={<Explore />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/postcreator" element={<PostCreator />} />
             <Route path="/profile" element={<Profile />} />
