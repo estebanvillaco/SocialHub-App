@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useFollowing } from "../../context/FollowingContext";
+import { useProfile } from "../../context/ProfileContext";
 import LikeButton from "../../components/Likebutton";
 
 const Profile = () => {
   const { keycloak, authenticated: isAuthenticated } = useAuth();
   const { following, followUser, unfollowUser } = useFollowing();
+  const { profile = { username: "", bio: "", avatar: "" }, updateProfile = () => {} } = useProfile() || {};
   const token = localStorage.getItem("token");
 
   const [user, setUser] = useState(null);
@@ -36,6 +38,7 @@ const Profile = () => {
       );
       if (response.ok) {
         const userData = await response.json();
+        console.log("Fetched user data:", userData);
         setUser(userData);
         setFormData({
           firstName: userData.firstName || "",
@@ -45,7 +48,24 @@ const Profile = () => {
           password: "",
           profilePicture: null,
         });
-        setPreviewImage(userData.profilePicture ? `data:image/jpeg;base64,${btoa(String.fromCharCode(...new Uint8Array(userData.profilePicture)))}` : null);
+        setPreviewImage(
+          userData.profilePicture
+            ? `data:image/jpeg;base64,${btoa(
+                String.fromCharCode(...new Uint8Array(userData.profilePicture))
+              )}`
+            : null
+        );
+        updateProfile({
+          username: userData.username || "",
+          bio: userData.bio || "Bio goes here",
+          avatar: userData.profilePicture
+            ? `data:image/jpeg;base64,${btoa(
+                String.fromCharCode(...new Uint8Array(userData.profilePicture))
+              )}`
+            : "",
+        });
+      } else {
+        console.error("Failed to fetch user profile, status:", response.status);
       }
     } catch (error) {
       console.error("Error fetching user profile", error);
@@ -60,16 +80,25 @@ const Profile = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        const formattedPosts = data.map(post => ({
-          id: post.id,
-          user: post.user && post.user.length > 2 ? post.user : "Unknown User",
-          caption: post.content || "No caption",
-          image: post.imagePath ? `http://localhost:8080/images/${post.imagePath}` : null,
-          likes: post.likes ?? 0,
-          liked: post.liked ?? false,
-          comments: post.comments || [],
-        })).filter(post => post.user !== "jlle");
+        const formattedPosts = data
+          .filter(post => post.keycloakId === keycloak.subject)
+          .map(post => {
+            const userValue = post.username || profile.username || user?.username || "Unknown User";
+            console.log("Post user value:", { post, userValue });
+            return {
+              id: post.id,
+              user: userValue,
+              caption: post.content || "No caption",
+              image: post.imagePath ? `http://localhost:8080/images/${post.imagePath}` : null,
+              likes: post.likes ?? 0,
+              liked: post.liked ?? false,
+              comments: post.comments || [],
+              keycloakId: post.keycloakId,
+            };
+          });
         setUserPosts(formattedPosts);
+      } else {
+        console.error("Failed to fetch posts, status:", response.status);
       }
     } catch (error) {
       console.error("Error fetching posts", error);
@@ -105,7 +134,8 @@ const Profile = () => {
       });
       if (response.ok) {
         alert("Profile updated successfully!");
-        fetchUserProfile(); // Refresh profile data
+        await fetchUserProfile(); // Ensure fetch completes
+        setEditMode(false); // Force re-render by exiting edit mode
       } else {
         alert("Failed to update profile. Please try again.");
       }
@@ -128,6 +158,8 @@ const Profile = () => {
 
   if (!isAuthenticated || !user) return <div className="text-white">Loading...</div>;
 
+  console.log("Render state:", { user, profile, userPosts });
+
   return (
     <div className="profile-page p-4 text-white">
       <button onClick={() => setEditMode(!editMode)} className="edit-button bg-blue-600 p-2 rounded mb-4">
@@ -135,19 +167,19 @@ const Profile = () => {
       </button>
       <div className="flex items-center mb-4">
         <img
-          src={previewImage || "/default-profile.png"}
+          src={previewImage || profile.avatar || "/default-profile.png"}
           alt="Profile"
           className="profile-pic w-32 h-32 object-cover rounded-full mr-4"
         />
         <div className="user-info">
-          <h2>{user.username || "Unknown User"}</h2>
+          <h2>{profile.username || user.username || "Unknown User"}</h2>
           <div className="stats">
             Posts: {userPosts.length} | Followers: N/A | Following: {following.length}
           </div>
           {user.keycloakId !== keycloak.subject && (
             <button
               onClick={handleFollowClick}
-              className={`p-2 rounded ${isFollowing ? 'bg-red-600' : 'bg-green-600'}`}
+              className={`p-2 rounded ${isFollowing ? "bg-red-600" : "bg-green-600"}`}
             >
               {isFollowing ? "Unfollow" : "Follow"}
             </button>
@@ -155,7 +187,7 @@ const Profile = () => {
           <button className="p-2 bg-gray-600 rounded ml-2">Message</button>
         </div>
       </div>
-      <div className="bio mb-4">Bio goes here</div>
+      <div className="bio mb-4">{profile.bio || "Bio goes here"}</div>
       <div className="posts-grid grid grid-cols-1 md:grid-cols-2 gap-4">
         {userPosts.length > 0 ? (
           userPosts.map((post) => (
@@ -171,7 +203,9 @@ const Profile = () => {
                 </div>
               </div>
               <div className="post-content-wrapper mb-2">
-                {post.image && <img src={post.image} alt={post.caption} className="post-image w-full max-h-64 object-cover" />}
+                {post.image && (
+                  <img src={post.image} alt={post.caption} className="post-image w-full max-h-64 object-cover" />
+                )}
                 {post.caption && <p className="post-caption mt-2">{post.caption}</p>}
               </div>
               <div className="post-actions flex items-center gap-4">

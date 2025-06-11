@@ -5,7 +5,7 @@ import { FeedProvider } from "./context/FeedContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import { InteractionProvider } from "./context/InteractionContext";
 import { FollowingProvider } from "./context/FollowingContext";
-
+import { ProfileProvider } from "./context/ProfileContext"; // Import ProfileProvider
 
 // Import components
 import PostCreator from "./components/PostCreator";
@@ -17,8 +17,6 @@ import Home from "./Navigation/components/Home";
 import Search from "./Navigation/components/SearchAndFollow";
 import Messages from "./Navigation/components/Messages";
 import Profile from "./Navigation/components/Profile";
-
-
 
 // Import styles
 import "./styles.css";
@@ -73,7 +71,6 @@ const MainContent = () => {
   );
 };
 
-
 const App = () => {
   return (
     <AuthProvider>
@@ -81,9 +78,11 @@ const App = () => {
         <NotificationProvider>
           <InteractionProvider>
             <FollowingProvider>
-              <Router>
-                <MainContent />
-              </Router>
+              <ProfileProvider> {/* Add ProfileProvider here */}
+                <Router>
+                  <MainContent />
+                </Router>
+              </ProfileProvider>
             </FollowingProvider>
           </InteractionProvider>
         </NotificationProvider>
