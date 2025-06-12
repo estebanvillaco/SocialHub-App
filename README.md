@@ -21,7 +21,7 @@ We use Docker to run Keycloak locally for development.
 ### 🐳 Quick Start
 
 1. **Install Docker**  
-   `# https://www.docker.com/products/docker-desktop`
+   `#https://www.docker.com/products/docker-desktop`
 
 2. **Start Keycloak Server**
 
@@ -173,6 +173,11 @@ cd socialhub-backend
 Or use **Run > Spring Boot Application** in your IDE.
 
 ---
+### Link to Swagger to test the backend
+
+```bash
+http://localhost:8080/swagger-ui/index.html
+```
 
 ## 🧠 Tech Stack
 
