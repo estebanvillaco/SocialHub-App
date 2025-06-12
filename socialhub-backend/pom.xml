@@ -56,14 +56,14 @@
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 		</dependency>
 
-		<!-- Keycloak Spring Boot Starter (for Keycloak integration) -->
+		<!-- Keycloak Spring Boot Starter -->
 		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-spring-boot-starter</artifactId>
 			<version>22.0.1</version>
 		</dependency>
 
-		<!-- Keycloak Admin Client (for password updates in Keycloak) -->
+		<!-- Keycloak Admin Client -->
 		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-admin-client</artifactId>
@@ -91,11 +91,18 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Testing dependencies -->
+		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- SpringDoc OpenAPI -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
 		</dependency>
 	</dependencies>
 
@@ -126,5 +133,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
